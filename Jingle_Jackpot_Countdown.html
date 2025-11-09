@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lucky Draw - Coming Soon!</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(
+          135deg,
+          #1e3c72 0%,
+          #2a5298 50%,
+          #7e22ce 100%
+        );
+        min-height: 100vh;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow-x: hidden;
+      }
+
+      /* Animated background stars */
+      .stars {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .star {
+        position: absolute;
+        background: white;
+        border-radius: 50%;
+        animation: twinkle 3s infinite;
+      }
+
+      @keyframes twinkle {
+        0%,
+        100% {
+          opacity: 0.3;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+
+      .container {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 30px;
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+        max-width: 900px;
+        width: 100%;
+        padding: 50px;
+        animation: slideIn 0.8s ease-out;
+        position: relative;
+        z-index: 1;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+
+      .church-name {
+        color: #7e22ce;
+        font-size: 32px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .event-title {
+        color: #1e3c72;
+        font-size: 48px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+      }
+
+      .event-tagline {
+        color: #666;
+        font-size: 20px;
+        font-style: italic;
+      }
+
+      .countdown-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 40px;
+        border-radius: 20px;
+        margin: 40px 0;
+        color: white;
+        text-align: center;
+        box-shadow: 0 15px 40px rgba(118, 75, 162, 0.4);
+      }
+
+      .countdown-title {
+        font-size: 28px;
+        margin-bottom: 30px;
+        font-weight: bold;
+      }
+
+      .countdown {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      .countdown-item {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        padding: 25px;
+        border-radius: 15px;
+        min-width: 100px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        transition: transform 0.3s ease;
+      }
+
+      .countdown-item:hover {
+        transform: translateY(-5px);
+        background: rgba(255, 255, 255, 0.3);
+      }
+
+      .countdown-number {
+        font-size: 48px;
+        font-weight: bold;
+        display: block;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .countdown-label {
+        font-size: 16px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-top: 10px;
+        opacity: 0.9;
+      }
+
+      .prizes-section {
+        margin-top: 50px;
+      }
+
+      .prizes-title {
+        text-align: center;
+        font-size: 36px;
+        color: #1e3c72;
+        margin-bottom: 40px;
+        font-weight: bold;
+      }
+
+      .prizes-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 25px;
+      }
+
+      .prize-card {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        padding: 30px;
+        border-radius: 20px;
+        text-align: center;
+        transition: all 0.4s ease;
+        border: 3px solid transparent;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .prize-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.5),
+          transparent
+        );
+        transition: left 0.5s;
+      }
+
+      .prize-card:hover::before {
+        left: 100%;
+      }
+
+      .prize-card:hover {
+        transform: translateY(-10px) scale(1.05);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        border-color: #764ba2;
+      }
+
+      .prize-icon {
+        font-size: 60px;
+        margin-bottom: 15px;
+        display: block;
+        animation: bounce 2s infinite;
+      }
+
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      .prize-name {
+        font-size: 24px;
+        font-weight: bold;
+        color: #764ba2;
+        margin-bottom: 10px;
+      }
+
+      .prize-description {
+        font-size: 16px;
+        color: #555;
+      }
+
+      .special-prize {
+        grid-column: 1 / -1;
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white;
+      }
+
+      .special-prize .prize-name,
+      .special-prize .prize-description {
+        color: white;
+      }
+
+      .footer {
+        margin-top: 50px;
+        text-align: center;
+        color: #666;
+        padding-top: 30px;
+        border-top: 2px solid #eee;
+        font-size: 18px;
+      }
+
+      .footer p {
+        margin: 10px 0;
+      }
+
+      .draw-date {
+        background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+        padding: 20px;
+        border-radius: 15px;
+        margin: 30px 0;
+        text-align: center;
+        font-size: 24px;
+        font-weight: bold;
+        color: #c0392b;
+      }
+
+      @media (max-width: 600px) {
+        .container {
+          padding: 30px 20px;
+        }
+
+        .event-title {
+          font-size: 36px;
+        }
+
+        .countdown-item {
+          min-width: 80px;
+          padding: 20px 15px;
+        }
+
+        .countdown-number {
+          font-size: 36px;
+        }
+
+        .prizes-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .special-prize {
+          grid-column: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="stars" id="stars"></div>
+
+    <div class="container">
+      <div class="header">
+        <div class="church-name">🕊️ Your Church Name</div>
+        <div class="event-title">🎊 Christmas Lucky Draw 2025 🎊</div>
+        <div class="event-tagline">"Faith, Hope & Blessings"</div>
+      </div>
+
+      <div class="draw-date">📅 Draw Date: December 26, 2025</div>
+
+      <div class="countdown-section">
+        <div class="countdown-title">⏰ Countdown to the Draw!</div>
+        <div class="countdown">
+          <div class="countdown-item">
+            <span class="countdown-number" id="days">00</span>
+            <span class="countdown-label">Days</span>
+          </div>
+          <div class="countdown-item">
+            <span class="countdown-number" id="hours">00</span>
+            <span class="countdown-label">Hours</span>
+          </div>
+          <div class="countdown-item">
+            <span class="countdown-number" id="minutes">00</span>
+            <span class="countdown-label">Minutes</span>
+          </div>
+          <div class="countdown-item">
+            <span class="countdown-number" id="seconds">00</span>
+            <span class="countdown-label">Seconds</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="prizes-section">
+        <div class="prizes-title">🎁 Amazing Prizes Await!</div>
+
+        <div class="prizes-grid">
+          <div class="prize-card special-prize">
+            <span class="prize-icon">🏆</span>
+            <div class="prize-name">First Prize</div>
+            <div class="prize-description">Grand Prize - Worth ₹50,000</div>
+          </div>
+
+          <div class="prize-card">
+            <span class="prize-icon">🥈</span>
+            <div class="prize-name">Second Prize</div>
+            <div class="prize-description">Amazing Prize - Worth ₹25,000</div>
+          </div>
+
+          <div class="prize-card">
+            <span class="prize-icon">🥉</span>
+            <div class="prize-name">Third Prize</div>
+            <div class="prize-description">Exciting Prize - Worth ₹15,000</div>
+          </div>
+
+          <div class="prize-card">
+            <span class="prize-icon">🎁</span>
+            <div class="prize-name">10 Consolation Prizes</div>
+            <div class="prize-description">
+              Special Gifts for 10 Lucky Winners
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <p><strong>Get your tickets today!</strong></p>
+        <p>Winners will be announced right here on December 26, 2025</p>
+        <p>🙏 May God bless you all!</p>
+      </div>
+    </div>
+
+    <script>
+      // Create animated stars in background
+      function createStars() {
+        const starsContainer = document.getElementById("stars");
+        for (let i = 0; i < 50; i++) {
+          const star = document.createElement("div");
+          star.className = "star";
+          star.style.width = Math.random() * 3 + "px";
+          star.style.height = star.style.width;
+          star.style.left = Math.random() * 100 + "%";
+          star.style.top = Math.random() * 100 + "%";
+          star.style.animationDelay = Math.random() * 3 + "s";
+          starsContainer.appendChild(star);
+        }
+      }
+
+      createStars();
+
+      // Countdown timer
+      function updateCountdown() {
+        const drawDate = new Date("December 26, 2025 10:00:00").getTime();
+        const now = new Date().getTime();
+        const distance = drawDate - now;
+
+        if (distance < 0) {
+          document.querySelector(".countdown-section").innerHTML =
+            '<div class="countdown-title" style="font-size: 36px;">🎉 The Draw is Here! 🎉</div>';
+          return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor(
+          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById("days").textContent = String(days).padStart(
+          2,
+          "0"
+        );
+        document.getElementById("hours").textContent = String(hours).padStart(
+          2,
+          "0"
+        );
+        document.getElementById("minutes").textContent = String(
+          minutes
+        ).padStart(2, "0");
+        document.getElementById("seconds").textContent = String(
+          seconds
+        ).padStart(2, "0");
+      }
+
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    </script>
+  </body>
+</html>
